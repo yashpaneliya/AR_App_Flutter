@@ -1,7 +1,6 @@
 // import 'package:arkit_plugin/arkit_plugin.dart';
+import 'package:ar_app/ardemo.dart';
 import 'package:flutter/material.dart';
-import 'package:vector_math/vector_math_64.dart';
-import 'package:arcore_flutter_plugin/arcore_flutter_plugin.dart';
 
 void main() {
   runApp(MyApp());
@@ -12,46 +11,69 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'AP Demo',
-      home: ARDemo(),
+      home: ChooseAR(),
     );
   }
 }
 
-class ARDemo extends StatefulWidget {
+class ChooseAR extends StatefulWidget {
   @override
-  _ARDemoState createState() => _ARDemoState();
+  _ChooseARState createState() => _ChooseARState();
 }
 
-class _ARDemoState extends State<ARDemo> {
-  ArCoreController arc;
-
-  addsphere(ArCoreController arCoreController){
-    final material=ArCoreMaterial(color: Color.fromRGBO(155,255,255,1));
-    final sphere = ArCoreSphere(materials: [material],radius: 0.2);
-    final node=ArCoreNode(shape: sphere,position: Vector3(0,0,-0.5));
-    arCoreController.addArCoreNode(node);
-  }
-
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-    arc.dispose();
-  }
-
+class _ChooseARState extends State<ChooseAR> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('ARDemo'),
+        title: Text('AR Demo App Flutter'),
+        backgroundColor: Color.fromRGBO(255, 0, 0, 1),
       ),
-      body: ArCoreView(
-        onArCoreViewCreated: (c){
-          arc=c;
-          addsphere(arc);
-        },
-      ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Center(
+            child: Container(
+              width: MediaQuery.of(context).size.width-50.0,
+              child: FlatButton(
+                color: Colors.cyan,
+                textColor: Colors.white,
+                child: Text('AR Sphere'),
+                onPressed: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => ARDemo(choice: 's',),));
+                },
+              ),
+            ),
+          ),
+          Center(
+            child: Container(
+              width: MediaQuery.of(context).size.width-50.0,
+              child: FlatButton(
+                color: Colors.red,
+                textColor: Colors.white,
+                child: Text('AR Box'),
+                onPressed: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => ARDemo(choice: 'b',),));
+                },
+              ),
+            ),
+          ),
+          Center(
+            child: Container(
+              width: MediaQuery.of(context).size.width-50.0,
+              child: FlatButton(
+                color: Colors.green,
+                textColor: Colors.white,
+                child: Text('AR Cylinder'),
+                onPressed: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => ARDemo(choice: 'c',),));
+                },
+              ),
+            ),
+          )
+      ],),
     );
   }
 }
